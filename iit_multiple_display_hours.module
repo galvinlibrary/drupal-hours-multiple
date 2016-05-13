@@ -100,7 +100,8 @@ function iit_multiple_display_hours_format_message($incluldeOpenMsg, $daysAhead)
       if ($incluldeOpenMsg>0){// won't use this flag for hours page
         $isOpen = iit_multiple_display_hours_check_if_open($dataObj[0]);
         $openMsg = iit_multiple_display_hours_format_open_msg($isOpen);
-        $message .= "<p>Currently: $openMsg</p>";
+        //$message .= "<p>Currently: $openMsg</p>";
+        $message="";
       }
     }
     else{
