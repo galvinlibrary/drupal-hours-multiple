@@ -103,7 +103,7 @@ function iit_multiple_display_hours_format_message($incluldeOpenMsg, $daysAhead)
         $isOpen = iit_multiple_display_hours_check_if_open($dataObj[0]);
         $openMsg = iit_multiple_display_hours_format_open_msg($isOpen);
         $message .= "<p>Currently: $openMsg</p>";
-        //$message="";
+        $message="";
       }
     }
     else{
