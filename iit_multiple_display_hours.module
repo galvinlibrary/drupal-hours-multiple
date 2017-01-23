@@ -18,7 +18,7 @@ function iit_multiple_display_hours_get_and_format_date($daysAhead){
   return $today;
 }
 //retrieve JSON data from a Google Calendar (public)
-function iit_multiple_display_hours_format_hours_data($dateData){// default is to use Galvin and today's Unix date
+function iit_multiple_display_hours_format_hours_data($dateData, $msgtomorrow){// default is to use Galvin and today's Unix date
   $msg="no data available";
   $timeFormat="g:ia";
   
@@ -47,7 +47,7 @@ function iit_multiple_display_hours_format_hours_data($dateData){// default is t
       $startTime = iit_display_hours_format_time(date($timeFormat,$tmpStart));
       $endTime = iit_display_hours_format_time(date($timeFormat,$tmpEnd));
       
-      $msg=iit_display_hours_format_todays_hours($startTime, $endTime);
+      $msg=iit_display_hours_format_todays_hours($startTime, $endTime, $msgtomorrow);
 
       return $msg; // return hours info
     } // end library open
@@ -85,7 +85,7 @@ function iit_multiple_display_hours_get_calendar_data($calendar, $dayToGet=0){
     return $dateData;
   }
 }
-function iit_multiple_display_hours_format_message($incluldeOpenMsg, $daysAhead){
+function iit_multiple_display_hours_format_message($incluldeOpenMsg, $daysAhead, $msgtomorrow){
   $debug=false;
   $galvinCal="iit.edu_8l0d8qd4qtfn7skmgkiu55uv58%40group.calendar.google.com";
   $message="";
@@ -96,7 +96,7 @@ function iit_multiple_display_hours_format_message($incluldeOpenMsg, $daysAhead)
       if ($debug){
         print_r($dataObj[0]);
       }
-      $message .= iit_multiple_display_hours_format_hours_data($dataObj);
+      $message .= iit_multiple_display_hours_format_hours_data($dataObj, $msgtomorrow);
       if ($incluldeOpenMsg>0){// won't use this flag for hours page
         $isOpen = iit_multiple_display_hours_check_if_open($dataObj[0]);
         $openMsg = iit_multiple_display_hours_format_open_msg($isOpen);
@@ -115,8 +115,9 @@ function iit_multiple_display_hours_format_message($incluldeOpenMsg, $daysAhead)
 function iit_multiple_display_hours_block_view($delta = '') {
   $incluldeOpenMsg=0;
   for ($i=1; $i<8; $i++){
+	$msgtomorrow = iit_multiple_display_hours_format_message($incluldeOpenMsg, $i+1);
     $day = "<div class=\"col1\">" . iit_multiple_display_hours_get_and_format_date($i) . "</div>";
-    $hours = "<div class=\"col2\">" . iit_multiple_display_hours_format_message($incluldeOpenMsg, $i) . "</div>";
+    $hours = "<div class=\"col2\">" . iit_multiple_display_hours_format_message($incluldeOpenMsg, $i, $msgtomorrow) . "</div>";
     $msg .= $day . $hours;
   }
 //  $block['subject'] = t("Today's Hours");
